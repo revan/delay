@@ -1,0 +1,2 @@
+rootProject.name='Delayed Start'
+include ':app'
