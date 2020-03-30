@@ -3,26 +3,21 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/nav_graph"
-    app:startDestination="@id/FirstFragment">
+    app:startDestination="@id/chooseAppFragment">
 
     <fragment
-        android:id="@+id/FirstFragment"
-        android:name="io.revan.delayedstart.FirstFragment"
-        android:label="@string/first_fragment_label"
-        tools:layout="@layout/fragment_first">
-
+        android:id="@+id/chooseAppFragment"
+        android:name="io.revan.delayedstart.ChooseAppFragment"
+        android:label="fragment_choose_app"
+        tools:layout="@layout/fragment_choose_app_list" >
         <action
-            android:id="@+id/action_FirstFragment_to_SecondFragment"
-            app:destination="@id/SecondFragment" />
+            android:id="@+id/action_chooseAppFragment_to_configureShortcutFragment"
+            app:destination="@id/configureShortcutFragment" />
     </fragment>
     <fragment
-        android:id="@+id/SecondFragment"
-        android:name="io.revan.delayedstart.SecondFragment"
-        android:label="@string/second_fragment_label"
-        tools:layout="@layout/fragment_second">
-
-        <action
-            android:id="@+id/action_SecondFragment_to_FirstFragment"
-            app:destination="@id/FirstFragment" />
+        android:id="@+id/configureShortcutFragment"
+        android:name="io.revan.delayedstart.ConfigureShortcutFragment"
+        android:label="fragment_configure_shortcut"
+        tools:layout="@layout/fragment_configure_shortcut" >
     </fragment>
 </navigation>
