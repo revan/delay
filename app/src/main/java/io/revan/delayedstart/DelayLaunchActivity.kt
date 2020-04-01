@@ -4,8 +4,12 @@ import android.content.ComponentName
 import android.content.Intent
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.os.CountDownTimer
 import kotlinx.android.synthetic.main.activity_delay_launch.*
 import java.lang.IllegalArgumentException
+
+private const val TIMER_LENGTH = 10L * 1000L  // TODO: pass this as intent
+private const val TIMER_UNIT_MS = 1000L
 
 /**
  * An example full-screen activity that shows and hides the system UI (i.e.
@@ -28,10 +32,19 @@ class DelayLaunchActivity : AppCompatActivity() {
                 )
             }
 
-            // TODO: have this trigger on a timer rather than button
-            dummy_button.setOnClickListener {
-                startActivity(proxiedIntent)
-            }
+            // TODO: reset timer if we lose window focus
+            object: CountDownTimer(TIMER_LENGTH, TIMER_UNIT_MS) {
+                override fun onFinish() {
+                    fullscreen_content.text = getString(R.string.countdown_done)
+                    startActivity(proxiedIntent)
+                }
+
+                override fun onTick(millisUntilFinished: Long) {
+                    fullscreen_content.text = getString(
+                        R.string.countdown_template, millisUntilFinished / 1000 + 1)
+                }
+
+            }.start()
         }
     }
 
