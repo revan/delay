@@ -18,8 +18,7 @@ import android.view.ViewGroup
  */
 class ChooseAppFragment : Fragment() {
 
-    // TODO: Customize parameters
-    private var columnCount = 1
+    private var columnCount = 3
 
     private var listener: OnListFragmentInteractionListener? = null
 
