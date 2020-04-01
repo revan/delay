@@ -1,4 +1,4 @@
-package io.revan.delayedstart
+package io.revan.delay
 
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity

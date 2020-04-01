@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/chooseAppFragment"
-        android:name="io.revan.delayedstart.ChooseAppFragment"
+        android:name="io.revan.delay.ChooseAppFragment"
         android:label="fragment_choose_app"
         tools:layout="@layout/fragment_choose_app_list" >
         <action
@@ -16,7 +16,7 @@
     </fragment>
     <fragment
         android:id="@+id/configureShortcutFragment"
-        android:name="io.revan.delayedstart.ConfigureShortcutFragment"
+        android:name="io.revan.delay.ConfigureShortcutFragment"
         android:label="fragment_configure_shortcut"
         tools:layout="@layout/fragment_configure_shortcut" >
     </fragment>

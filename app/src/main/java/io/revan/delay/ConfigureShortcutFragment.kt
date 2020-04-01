@@ -1,4 +1,4 @@
-package io.revan.delayedstart
+package io.revan.delay
 
 import android.app.PendingIntent
 import android.content.ComponentName
@@ -69,7 +69,7 @@ class ConfigureShortcutFragment : Fragment() {
         val intent = Intent(Intent.ACTION_VIEW).apply {
             putExtra("pkg", pkg)
             putExtra("cls", cls)
-            component = ComponentName("io.revan.delayedstart", "io.revan.delayedstart.DelayLaunchActivity")
+            component = ComponentName("io.revan.delay", "io.revan.delay.DelayLaunchActivity")
         }
 
         val pinShortcutInfo = ShortcutInfoCompat.Builder(context!!, UUID.randomUUID().toString())

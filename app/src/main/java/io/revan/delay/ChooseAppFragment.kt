@@ -1,4 +1,4 @@
-package io.revan.delayedstart
+package io.revan.delay
 
 import android.content.Context
 import android.content.Intent

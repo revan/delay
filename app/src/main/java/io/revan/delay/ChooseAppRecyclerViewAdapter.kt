@@ -1,4 +1,4 @@
-package io.revan.delayedstart
+package io.revan.delay
 
 import android.graphics.drawable.Drawable
 import android.support.v7.widget.RecyclerView
