@@ -17,6 +17,8 @@ private const val TIMER_UNIT_MS = 1000L
  */
 class DelayLaunchActivity : AppCompatActivity() {
 
+    var timer: CountDownTimer? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
@@ -34,8 +36,7 @@ class DelayLaunchActivity : AppCompatActivity() {
                 )
             }
 
-            // TODO: reset timer if we lose window focus
-            object: CountDownTimer(TIMER_LENGTH, TIMER_UNIT_MS) {
+            timer = object: CountDownTimer(TIMER_LENGTH, TIMER_UNIT_MS) {
                 override fun onFinish() {
                     fullscreen_content.text = getString(R.string.countdown_done)
                     startActivity(proxiedIntent)
@@ -45,9 +46,20 @@ class DelayLaunchActivity : AppCompatActivity() {
                     fullscreen_content.text = getString(
                         R.string.countdown_template, millisUntilFinished / 1000 + 1)
                 }
-
-            }.start()
+            }
         }
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        timer!!.start()
+    }
+
+    override fun onPause() {
+        super.onPause()
+
+        timer!!.cancel()
     }
 
 }
