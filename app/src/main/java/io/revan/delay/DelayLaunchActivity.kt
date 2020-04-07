@@ -25,7 +25,9 @@ class DelayLaunchActivity : AppCompatActivity() {
         intent.extras!!.let {intent ->
             val proxiedIntent = Intent(Intent.ACTION_MAIN).apply {
                 addCategory(Intent.CATEGORY_LAUNCHER)
-                flags = Intent.FLAG_ACTIVITY_TASK_ON_HOME or Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or
+                        Intent.FLAG_ACTIVITY_TASK_ON_HOME or
+                        Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
                 component = ComponentName(
                     intent.getString("pkg") ?: throw IllegalArgumentException("pkg expected"),
                     intent.getString("cls") ?: throw IllegalArgumentException("cls expected")
