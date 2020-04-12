@@ -14,6 +14,7 @@ import android.support.v4.graphics.drawable.IconCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_configure_shortcut.view.*
 import java.util.*
 
 private const val ARG_PACKAGE = "pkg"
@@ -39,14 +40,18 @@ class ConfigureShortcutFragment : Fragment() {
             name = it.getString(ARG_NAME)
         }
 
-        createShortcut(pkg!!, cls!!, name!!)
+        // TODO display error if any fields are missing
     }
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        return inflater.inflate(R.layout.fragment_configure_shortcut, container, false)
+        val view = inflater.inflate(R.layout.fragment_configure_shortcut, container, false)
+        view.create_shortcut_button.setOnClickListener {
+            createShortcut(pkg!!, cls!!, name!!)
+        }
+        return view
     }
 
     companion object {

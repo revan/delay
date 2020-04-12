@@ -26,7 +26,6 @@ class CreateShorcutTest {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 
         goHome()
-        openMainActivity()
         createShortcut()
     }
 
@@ -50,10 +49,13 @@ class CreateShorcutTest {
     }
 
     private fun createShortcut() {
+        openMainActivity()
+
         val targetSelector = UiSelector().text(TARGET_APP_NAME)
         UiScrollable(UiSelector().scrollable(true)).scrollIntoView(targetSelector)
         device.findObject(targetSelector).clickAndWaitForNewWindow()
 
+        device.findObject(UiSelector().text("CREATE SHORTCUT")).clickAndWaitForNewWindow()
         device.findObject(UiSelector().text("Add automatically")).click()
     }
 

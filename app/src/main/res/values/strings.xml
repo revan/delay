@@ -2,11 +2,12 @@
     <string name="app_name">Delay</string>
     <string name="action_settings">Settings</string>
 
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-
     <string name="title_activity_delay_launch">DelayLaunchActivity</string>
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
+
+    <string name="launch_delay">Launch Delay</string>
+    <string name="create_shortcut">Create Shortcut</string>
 
     <string name="countdown_done">ready!</string>
     <string name="countdown_template">%ds</string>
