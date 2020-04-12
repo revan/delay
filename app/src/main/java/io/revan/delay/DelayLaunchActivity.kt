@@ -6,9 +6,7 @@ import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
 import android.os.CountDownTimer
 import kotlinx.android.synthetic.main.activity_delay_launch.*
-import java.lang.IllegalArgumentException
 
-private const val TIMER_LENGTH = 10L * 1000L  // TODO: pass this as intent
 private const val TIMER_UNIT_MS = 1000L
 
 /**
@@ -31,12 +29,14 @@ class DelayLaunchActivity : AppCompatActivity() {
                         Intent.FLAG_ACTIVITY_TASK_ON_HOME or
                         Intent.FLAG_ACTIVITY_RESET_TASK_IF_NEEDED
                 component = ComponentName(
-                    intent.getString("pkg") ?: throw IllegalArgumentException("pkg expected"),
-                    intent.getString("cls") ?: throw IllegalArgumentException("cls expected")
+                    requireNotNull(intent.getString(ARG_PACKAGE)),
+                    requireNotNull(intent.getString(ARG_CLASS))
                 )
             }
 
-            timer = object: CountDownTimer(TIMER_LENGTH, TIMER_UNIT_MS) {
+            val timerLength = intent.getInt(ARG_DELAY)
+
+            timer = object: CountDownTimer(timerLength * TIMER_UNIT_MS, TIMER_UNIT_MS) {
                 override fun onFinish() {
                     fullscreen_content.text = getString(R.string.countdown_done)
                     startActivity(proxiedIntent)

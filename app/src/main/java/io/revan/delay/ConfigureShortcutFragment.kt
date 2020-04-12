@@ -14,12 +14,14 @@ import android.support.v4.graphics.drawable.IconCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_configure_shortcut.*
 import kotlinx.android.synthetic.main.fragment_configure_shortcut.view.*
+import kotlinx.android.synthetic.main.fragment_configure_shortcut.view.launch_delay_input
 import java.util.*
 
-private const val ARG_PACKAGE = "pkg"
-private const val ARG_CLASS = "cls"
-private const val ARG_NAME = "name"
+private const val DELAY_MIN_SECS = 1
+private const val DELAY_MAX_SECS = 60
+private const val DELAY_DEFAULT_SECS = 10
 
 /**
  * A simple [Fragment] subclass.
@@ -48,9 +50,17 @@ class ConfigureShortcutFragment : Fragment() {
         savedInstanceState: Bundle?
     ): View? {
         val view = inflater.inflate(R.layout.fragment_configure_shortcut, container, false)
+
         view.create_shortcut_button.setOnClickListener {
             createShortcut(pkg!!, cls!!, name!!)
         }
+        view.launch_delay_input.apply {
+            minValue = DELAY_MIN_SECS
+            maxValue = DELAY_MAX_SECS
+            wrapSelectorWheel = false
+            value = DELAY_DEFAULT_SECS
+        }
+
         return view
     }
 
@@ -72,8 +82,9 @@ class ConfigureShortcutFragment : Fragment() {
 
     private fun createShortcut(pkg: String, cls: String, name: String)  {
         val intent = Intent(Intent.ACTION_VIEW).apply {
-            putExtra("pkg", pkg)
-            putExtra("cls", cls)
+            putExtra(ARG_PACKAGE, pkg)
+            putExtra(ARG_CLASS, cls)
+            putExtra(ARG_DELAY, launch_delay_input.value)
             component = ComponentName("io.revan.delay", "io.revan.delay.DelayLaunchActivity")
             addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
         }

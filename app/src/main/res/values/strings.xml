@@ -6,7 +6,7 @@
     <string name="dummy_button">Dummy Button</string>
     <string name="dummy_content">DUMMY\nCONTENT</string>
 
-    <string name="launch_delay">Launch Delay</string>
+    <string name="launch_delay">Launch Delay\n(seconds)</string>
     <string name="create_shortcut">Create Shortcut</string>
 
     <string name="countdown_done">ready!</string>
