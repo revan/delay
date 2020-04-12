@@ -70,6 +70,7 @@ class ConfigureShortcutFragment : Fragment() {
             putExtra("pkg", pkg)
             putExtra("cls", cls)
             component = ComponentName("io.revan.delay", "io.revan.delay.DelayLaunchActivity")
+            addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
         }
 
         val pinShortcutInfo = ShortcutInfoCompat.Builder(context!!, UUID.randomUUID().toString())

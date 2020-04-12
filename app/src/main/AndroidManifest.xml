@@ -13,7 +13,8 @@
             android:name="io.revan.delay.DelayLaunchActivity"
             android:configChanges="keyboardHidden"
             android:label="@string/title_activity_delay_launch"
-            android:theme="@style/AppTheme.NoActionBar">
+            android:theme="@style/AppTheme.NoActionBar"
+            android:excludeFromRecents="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN"/>
 
