@@ -14,6 +14,7 @@ import android.support.v4.graphics.drawable.IconCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import kotlinx.android.synthetic.main.fragment_choose_app.view.*
 import kotlinx.android.synthetic.main.fragment_configure_shortcut.*
 import kotlinx.android.synthetic.main.fragment_configure_shortcut.view.*
 import kotlinx.android.synthetic.main.fragment_configure_shortcut.view.launch_delay_input
@@ -60,6 +61,8 @@ class ConfigureShortcutFragment : Fragment() {
             wrapSelectorWheel = false
             value = DELAY_DEFAULT_SECS
         }
+        view.icon.setImageDrawable(context!!.packageManager.getApplicationIcon(pkg))
+        view.content.text = name
 
         return view
     }

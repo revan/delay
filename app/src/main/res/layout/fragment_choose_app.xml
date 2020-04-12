@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_margin="@dimen/text_margin">
+    android:layout_margin="@dimen/ui_margin">
 
     <ImageView
         android:id="@+id/icon"
@@ -16,6 +16,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?attr/textAppearanceListItem"
+        android:layout_marginTop="@dimen/text_margin"
         android:layout_centerHorizontal="true"
         android:layout_below="@id/icon"
         android:textAlignment="center"
