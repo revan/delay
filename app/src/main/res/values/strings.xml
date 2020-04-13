@@ -6,6 +6,7 @@
 
     <string name="launch_delay">Launch Delay\n(seconds)</string>
     <string name="create_shortcut">Create Shortcut</string>
+    <string name="shortcut_created_confirmation">Shortcut created!</string>
 
     <string name="countdown_done">ready!</string>
     <string name="countdown_template">%ds</string>

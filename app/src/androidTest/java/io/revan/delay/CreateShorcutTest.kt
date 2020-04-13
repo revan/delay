@@ -60,7 +60,6 @@ class CreateShorcutTest {
     }
 
     private fun openShortcut() {
-        goHome()
         device.findObject(UiSelector().text(TARGET_APP_NAME)).clickAndWaitForNewWindow()
     }
 
@@ -80,6 +79,7 @@ class CreateShorcutTest {
 
         openShortcut()
         device.waitForIdle(partialWait)
+        goHome()
         openShortcut()
 
         Assert.assertFalse(

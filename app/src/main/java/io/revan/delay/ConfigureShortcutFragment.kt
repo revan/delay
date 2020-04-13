@@ -1,8 +1,8 @@
 package io.revan.delay
 
+import android.app.Activity
 import android.app.PendingIntent
-import android.content.ComponentName
-import android.content.Intent
+import android.content.*
 import android.graphics.Bitmap
 import android.graphics.Canvas
 import android.graphics.drawable.Drawable
@@ -14,6 +14,7 @@ import android.support.v4.graphics.drawable.IconCompat
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import kotlinx.android.synthetic.main.fragment_choose_app.view.*
 import kotlinx.android.synthetic.main.fragment_configure_shortcut.*
 import kotlinx.android.synthetic.main.fragment_configure_shortcut.view.*
@@ -23,12 +24,11 @@ import java.util.*
 private const val DELAY_MIN_SECS = 1
 private const val DELAY_MAX_SECS = 60
 private const val DELAY_DEFAULT_SECS = 10
+private const val DELAY_ACTIVITY_CLASS = "io.revan.delay.DelayLaunchActivity"
+private const val DELAY_ACTIVITY_PACKAGE = "io.revan.delay"
+private const val SHORTCUT_INTENT_ACTION = "SHORTCUT_INTENT_ACTION"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [ConfigureShortcutFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
+
 class ConfigureShortcutFragment : Fragment() {
     private var pkg: String? = null
     private var cls: String? = null
@@ -61,26 +61,10 @@ class ConfigureShortcutFragment : Fragment() {
             wrapSelectorWheel = false
             value = DELAY_DEFAULT_SECS
         }
-        view.icon.setImageDrawable(context!!.packageManager.getApplicationIcon(pkg))
+        view.icon.setImageDrawable(context!!.packageManager.getApplicationIcon(pkg!!))
         view.content.text = name
 
         return view
-    }
-
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         */
-        @JvmStatic
-        fun newInstance(pkg: String, cls: String, name: String) =
-            ConfigureShortcutFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PACKAGE, pkg)
-                    putString(ARG_CLASS, cls)
-                    putString(ARG_NAME, name)
-                }
-            }
     }
 
     private fun createShortcut(pkg: String, cls: String, name: String)  {
@@ -88,7 +72,7 @@ class ConfigureShortcutFragment : Fragment() {
             putExtra(ARG_PACKAGE, pkg)
             putExtra(ARG_CLASS, cls)
             putExtra(ARG_DELAY, launch_delay_input.value)
-            component = ComponentName("io.revan.delay", "io.revan.delay.DelayLaunchActivity")
+            component = ComponentName(DELAY_ACTIVITY_PACKAGE, DELAY_ACTIVITY_CLASS)
             addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
         }
 
@@ -98,13 +82,26 @@ class ConfigureShortcutFragment : Fragment() {
             .setShortLabel(name)
             .build()
 
-        // TODO handle this failing (lower API versions?)
-        val pinnedShortcutCallbackIntent = ShortcutManagerCompat.createShortcutResultIntent(context!!, pinShortcutInfo)
+        val pinnedShortcutCallbackIntent = ShortcutManagerCompat.createShortcutResultIntent(
+            context!!, pinShortcutInfo)
+        pinnedShortcutCallbackIntent.action = SHORTCUT_INTENT_ACTION
 
-        // Configure the intent so that your app's broadcast receiver gets
-        // the callback successfully.For details, see PendingIntent.getBroadcast().
-        val successCallback = PendingIntent.getBroadcast(context, /* request code */ 0,
-            pinnedShortcutCallbackIntent, /* flags */ 0)
+        val successCallback = PendingIntent.getBroadcast(
+            context, 0, pinnedShortcutCallbackIntent,0)
+
+        val receiver = object: BroadcastReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                // Only triggers for successful results.
+                Toast.makeText(
+                    context, R.string.shortcut_created_confirmation, Toast.LENGTH_SHORT).show()
+
+                if (context is Activity) {
+                    context.unregisterReceiver(this)
+                    context.finish()
+                }
+            }
+        }
+        context!!.registerReceiver(receiver, IntentFilter(pinnedShortcutCallbackIntent.action))
 
         ShortcutManagerCompat.requestPinShortcut(context!!, pinShortcutInfo,
             successCallback.intentSender)
