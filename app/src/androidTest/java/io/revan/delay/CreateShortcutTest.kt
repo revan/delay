@@ -8,24 +8,34 @@ import org.junit.Assert
 import org.junit.Before
 import org.junit.Test
 import org.junit.runner.RunWith
+import java.io.File
 
+private const val SCREENSHOT_DIR = "/sdcard/Pictures/screenshots"
 private const val MAIN_ACTIVITY = "io.revan.delay"
 private const val AUTOMATION_TIMEOUT = 5000L
 private const val TARGET_APP_NAME = "YouTube"
 private const val TARGET_APP_PACKAGE = "com.google.android.youtube"
 private const val EXPECTED_DELAY = 10000L
 
-
 @RunWith(AndroidJUnit4::class)
-class CreateShorcutTest {
+class CreateShortcutTest {
 
     private lateinit var device: UiDevice
+    private var screenshotCount = 0
+
+    fun screenshot() {
+        File(SCREENSHOT_DIR).mkdirs()
+        device.executeShellCommand(
+            "screencap -p %s/%d.png".format(SCREENSHOT_DIR, screenshotCount++))
+        Thread.sleep(100)
+    }
 
     @Before
     fun setUp() {
         device = UiDevice.getInstance(InstrumentationRegistry.getInstrumentation())
 
         goHome()
+        screenshot()
         createShortcut()
     }
 
@@ -50,12 +60,16 @@ class CreateShorcutTest {
 
     private fun createShortcut() {
         openMainActivity()
+        screenshot()
 
         val targetSelector = UiSelector().text(TARGET_APP_NAME)
         UiScrollable(UiSelector().scrollable(true)).scrollIntoView(targetSelector)
+        screenshot()
         device.findObject(targetSelector).clickAndWaitForNewWindow()
 
+        screenshot()
         device.findObject(UiSelector().text("CREATE SHORTCUT")).clickAndWaitForNewWindow()
+        screenshot()
         device.findObject(UiSelector().text("Add automatically")).click()
     }
 
@@ -66,6 +80,7 @@ class CreateShorcutTest {
     @Test
     fun shortcutOpensApp() {
         openShortcut()
+        screenshot()
         Assert.assertTrue(
             "Wrapped app should be opened after " + EXPECTED_DELAY / 1000 + " seconds.",
             device.findObject(UiSelector().packageName(TARGET_APP_PACKAGE))

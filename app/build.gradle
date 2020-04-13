@@ -35,6 +35,10 @@ android {
         jvmTarget = "1.8"
     }
 
+    adbOptions {
+        installOptions '-g', '-r'
+    }
+
 }
 
 dependencies {
@@ -50,4 +54,50 @@ dependencies {
     testImplementation 'junit:junit:4.12'
     androidTestImplementation 'com.android.support.test:runner:1.0.2'
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
+}
+
+def grantPermissionsTask = task('grantPermissions', type: Exec) {
+    executable "${android.getAdbExe().toString()}"
+    args 'shell', 'pm', 'grant', 'io.revan.delay', 'WRITE_EXTERNAL_STORAGE'
+}
+
+def screenshotDir = "/sdcard/Pictures/screenshots"
+def reportsDirectory = "$buildDir/reports/androidTests/connected"
+
+def clearScreenshotsTask = task('clearScreenshots', type: Exec) {
+    executable "${android.getAdbExe().toString()}"
+    args 'shell', 'rm', '-r', screenshotDir
+}
+
+def createScreenshotDirectoryTask = task('createScreenshotDirectory', type: Exec, group: 'reporting') {
+    executable "${android.getAdbExe().toString()}"
+    args 'shell', 'mkdir', '-p', screenshotDir
+}
+
+def fetchScreenshotsTask = task('fetchScreenshots', type: Exec, group: 'reporting') {
+    executable "${android.getAdbExe().toString()}"
+    args 'pull', "$screenshotDir/.", reportsDirectory
+    finalizedBy {
+        clearScreenshotsTask
+    }
+
+    dependsOn {
+        createScreenshotDirectoryTask
+    }
+
+    dependsOn {
+        grantPermissionsTask
+    }
+
+    doFirst {
+        new File(reportsDirectory).mkdirs()
+    }
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'connectedDebugAndroidTest' || task.name == 'connectedAndroidTest') {
+        task.finalizedBy {
+            fetchScreenshotsTask
+        }
+    }
 }
