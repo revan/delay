@@ -56,9 +56,9 @@ dependencies {
     androidTestImplementation 'androidx.test.uiautomator:uiautomator:2.2.0'
 }
 
-def grantPermissionsTask = task('grantPermissions', type: Exec) {
+def grantPermissionsTask = task('grantPermissions', type: Exec, dependsOn: 'installDebug') {
     executable "${android.getAdbExe().toString()}"
-    args 'shell', 'pm', 'grant', 'io.revan.delay', 'WRITE_EXTERNAL_STORAGE'
+    args 'shell', 'pm', 'grant', 'io.revan.delay', 'android.permission.WRITE_EXTERNAL_STORAGE'
 }
 
 def screenshotDir = "/sdcard/Pictures/screenshots"
@@ -85,17 +85,16 @@ def fetchScreenshotsTask = task('fetchScreenshots', type: Exec, group: 'reportin
         createScreenshotDirectoryTask
     }
 
-    dependsOn {
-        grantPermissionsTask
-    }
-
     doFirst {
         new File(reportsDirectory).mkdirs()
     }
 }
 
 tasks.whenTaskAdded { task ->
-    if (task.name == 'connectedDebugAndroidTest' || task.name == 'connectedAndroidTest') {
+    if (task.name == 'connectedDebugAndroidTest') {
+        task.dependsOn {
+            grantPermissionsTask
+        }
         task.finalizedBy {
             fetchScreenshotsTask
         }
