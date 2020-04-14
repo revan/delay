@@ -16,18 +16,19 @@ private const val AUTOMATION_TIMEOUT = 5000L
 private const val TARGET_APP_NAME = "YouTube"
 private const val TARGET_APP_PACKAGE = "com.google.android.youtube"
 private const val EXPECTED_DELAY = 10000L
+private const val SCREENSHOT_TIME = 1000L
 
 @RunWith(AndroidJUnit4::class)
 class CreateShortcutTest {
 
     private lateinit var device: UiDevice
-    private var screenshotCount = 0
 
     fun screenshot() {
         File(SCREENSHOT_DIR).mkdirs()
+        Thread.sleep(500)
         device.executeShellCommand(
             "screencap -p %s/%d.png".format(SCREENSHOT_DIR, screenshotCount++))
-        Thread.sleep(100)
+        Thread.sleep(500)
     }
 
     @Before
@@ -44,6 +45,7 @@ class CreateShortcutTest {
 
     companion object {
         var shortcutCreated = false
+        var screenshotCount = 0
     }
 
     private fun goHome() {
@@ -91,7 +93,7 @@ class CreateShortcutTest {
         Assert.assertTrue(
             "Wrapped app should be opened after " + EXPECTED_DELAY / 1000 + " seconds.",
             device.findObject(UiSelector().packageName(TARGET_APP_PACKAGE))
-                .waitForExists(EXPECTED_DELAY + AUTOMATION_TIMEOUT)
+                .waitForExists(EXPECTED_DELAY + AUTOMATION_TIMEOUT - SCREENSHOT_TIME)
         )
     }
 
@@ -109,6 +111,16 @@ class CreateShortcutTest {
             device.findObject(UiSelector().packageName(TARGET_APP_PACKAGE))
                 .waitForExists(partialWait + AUTOMATION_TIMEOUT)
         )
+    }
+
+    @Test
+    fun openAndCloseHelp() {
+        openMainActivity()
+        screenshot()
+        device.findObject(UiSelector().description("Help")).clickAndWaitForNewWindow()
+        screenshot()
+        device.pressBack()
+        device.findObject(UiSelector().scrollable(true))
     }
 
 }
