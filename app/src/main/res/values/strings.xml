@@ -10,7 +10,7 @@
     <string name="shortcut_created_confirmation">Shortcut created!</string>
 
     <string name="countdown_done">ready!</string>
-    <string name="countdown_template">%ds</string>
+    <string name="countdown_template">%d</string>
 
     <string name="help_text">
         Delay is an app for breaking muscle-memory app-use habits by decoupling the physical action
