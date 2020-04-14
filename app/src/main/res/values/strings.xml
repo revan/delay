@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Delay</string>
+    <string name="app_name">delay</string>
     <string name="action_help">Help</string>
 
     <string name="title_activity_delay_launch">DelayLaunchActivity</string>
@@ -13,7 +13,7 @@
     <string name="countdown_template">%d</string>
 
     <string name="help_text">
-        Delay is an app for breaking muscle-memory app-use habits by decoupling the physical action
+        delay is an app for breaking muscle-memory app-use habits by decoupling the physical action
         from the neurological reward.
 
         \n\nChoose an installed app from the list to create a homescreen launcher shortcut, opening
