@@ -39,6 +39,7 @@ class DelayLaunchActivity : AppCompatActivity() {
             timer = object: CountDownTimer(timerLength * TIMER_UNIT_MS, TIMER_UNIT_MS) {
                 override fun onFinish() {
                     fullscreen_content.text = getString(R.string.countdown_done)
+                    finish()
                     startActivity(proxiedIntent)
                 }
 
