@@ -1,8 +1,9 @@
 package io.revan.delay
 
 import android.content.Intent
-import android.support.test.InstrumentationRegistry
-import android.support.test.runner.AndroidJUnit4
+import androidx.test.core.app.ApplicationProvider
+import androidx.test.ext.junit.runners.AndroidJUnit4
+import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.uiautomator.*
 import org.junit.Assert
 import org.junit.Before
@@ -47,7 +48,7 @@ class CreateShortcutTest {
     }
 
     private fun openMainActivity() {
-        val context = InstrumentationRegistry.getTargetContext()
+        val context = InstrumentationRegistry.getInstrumentation().targetContext
         val intent = context.packageManager.getLaunchIntentForPackage(MAIN_ACTIVITY)!!.apply {
             addFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK)
         }
